@@ -1,0 +1,1 @@
+This repository shows how to use https://github.com/Younesi/go-laravel to build a simple web application.
