@@ -61,7 +61,7 @@ func (u *User) GetByEmail(email string) (*User, error) {
 func (u *User) Get(id int) (*User, error) {
 	var user *User
 	collection := upper.Collection(u.Table())
-	res := collection.Find(up.Cond{"id": id})
+	res := collection.Find(id)
 
 	err := res.One(&user)
 	if err != nil {

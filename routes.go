@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/go-chi/chi/v5"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
 )
 
 func (a *application) routes() *chi.Mux {
@@ -30,7 +31,7 @@ func (a *application) routes() *chi.Mux {
 
 		for _, user := range users {
 			a.App.InfoLog.Println(user)
-			fmt.Fprint(w, "%s : %d", user.FirstName, user.ID)
+			fmt.Fprintf(w, "%s : %d", user.FirstName, user.ID)
 		}
 	})
 

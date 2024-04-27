@@ -173,12 +173,38 @@ func (t *Token) Authenticate(r *http.Request) (*User, error) {
 		return nil, errors.New("token wrong size")
 	}
 
+	tkn, err := t.GetByToken(token)
+	if err != nil {
+		return nil, errors.New("no matching token found")
+	}
+
+	if tkn.ExpiresAt.Before(time.Now()) {
+		return nil, errors.New("expired token")
+	}
+
 	user, err := t.GetUserForToken(token)
 	if err != nil {
-		return nil, errors.New("invalid token")
+		return nil, errors.New("no matching user found")
 	}
 
 	return user, nil
+}
+
+func (t *Token) Validate(token string) (bool, error) {
+	user, err := t.GetUserForToken(token)
+	if err != nil {
+		return false, errors.New("no matching user found")
+	}
+
+	if user.Token.PlainText != "" {
+		return false, errors.New("no matching token found")
+	}
+
+	if user.Token.ExpiresAt.Before(time.Now()) {
+		return false, errors.New("expired token")
+	}
+
+	return true, nil
 }
 
 func GetTokenByUserId(userId int) (Token, error) {
