@@ -1,6 +1,6 @@
 //go:build integration
 
-// run tests with this command: go test . --tags integration --count=1
+// run tests with this command: go test --cover . -v --tags integration --count=1
 package data
 
 import (
@@ -173,6 +173,54 @@ func TestUser_Update(t *testing.T) {
 
 	if u.LastName != "Smith" {
 		t.Error("last name not updated in database")
+	}
+}
+
+func TestUser_PasswordMatches(t *testing.T) {
+	u, err := models.Users.Get(1)
+	if err != nil {
+		t.Error("failed to get user: ", err)
+	}
+
+	matches, err := u.PasswordMatches(dummyUser.Password)
+	if err != nil {
+		t.Error("error checkign match: ", err)
+	}
+	if !matches {
+		t.Error("user password does not match")
+	}
+
+	matches, err = u.PasswordMatches("worng password")
+	if err != nil {
+		t.Error("error checkign match: ", err)
+	}
+	if matches {
+		t.Error("user password match when it should not!")
+	}
+}
+
+func TestUser_ResetPassword(t *testing.T) {
+	newPassword := "new_password"
+	err := models.Users.ResetPassword(1, newPassword)
+	if err != nil {
+		t.Error("error reseting password: ", err)
+	}
+
+	err = models.Users.ResetPassword(2, newPassword)
+	if err == nil {
+		t.Error("did not get an error reseting password for none-existing user", err)
+	}
+}
+
+func TestUser_Delete(t *testing.T) {
+	err := models.Users.Delete(1)
+	if err != nil {
+		t.Error("failed to delete user: ", err)
+	}
+
+	_, err = models.Users.Get(1)
+	if err == nil {
+		t.Error("retrived user who supposed to be deleted!")
 	}
 }
 
