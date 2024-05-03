@@ -5,10 +5,10 @@ import (
 	"crypto/sha256"
 	"encoding/base32"
 	"errors"
-	up "github.com/upper/db/v4"
-	"net/http"
 	"strings"
 	"time"
+
+	up "github.com/upper/db/v4"
 )
 
 type Token struct {
@@ -128,7 +128,6 @@ func (t *Token) Insert(token Token, u User) error {
 	token.UserId = u.ID
 	token.FirstName = u.FirstName
 	token.Email = u.Email
-	// token ?
 
 	_, err := collection.Insert(token)
 	if err != nil {
@@ -157,8 +156,8 @@ func (t *Token) GenerateToken(userId int, ttl time.Duration) (*Token, error) {
 	return token, nil
 }
 
-func (t *Token) Authenticate(r *http.Request) (*User, error) {
-	authorizationHeader := r.Header.Get("Authorization")
+func (t *Token) Authenticate(authorizationHeader string) (*User, error) {
+	//	authorizationHeader := r.Header.Get("Authorization")
 	if authorizationHeader == "" {
 		return nil, errors.New("no authorization header received")
 	}
@@ -201,7 +200,7 @@ func (t *Token) Validate(token string) (bool, error) {
 	}
 
 	if user.Token.ExpiresAt.Before(time.Now()) {
-		return false, errors.New("expired token")
+		return false, nil
 	}
 
 	return true, nil

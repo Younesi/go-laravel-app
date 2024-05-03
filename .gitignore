@@ -22,3 +22,4 @@ helm/platform-component/values.yaml
 .taskfile/LocalTasks.yml
 /coverage.out
 tmp/celeritasApp
+data/coverage.out
