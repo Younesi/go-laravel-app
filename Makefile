@@ -1,15 +1,15 @@
-BINARY_NAME=celeritasApp
+BINARY_NAME=atlasApp
 
 build:
 	@go mod vendor
-	@echo "Building Celeritas..."
+	@echo "Building Atlas..."
 	@go build -o tmp/${BINARY_NAME} .
-	@echo "Celeritas built!"
+	@echo "Atlas built!"
 
 run: build
-	@echo "Starting Celeritas..."
+	@echo "Starting Atlas..."
 	@./tmp/${BINARY_NAME} &
-	@echo "Celeritas started!"
+	@echo "Atlas started!"
 
 clean:
 	@echo "Cleaning..."
@@ -25,8 +25,8 @@ test:
 start: run
 
 stop:
-	@echo "Stopping Celeritas..."
+	@echo "Stopping Atlas..."
 	@-pkill -SIGTERM -f "./tmp/${BINARY_NAME}"
-	@echo "Stopped Celeritas!"
+	@echo "Stopped Atlas!"
 
 restart: stop start

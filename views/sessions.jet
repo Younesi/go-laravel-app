@@ -10,8 +10,8 @@
      <div class="col text-center">
             <div class="d-flex align-items-center justify-content-center md-5">
                 <div>
-                    <img src="/public/images/celeritas.jpg" class="mb-5" style="width: 100px;height:auto;">
-                    <h1>Celeritas</h1>
+                    <img src="/public/images/atlas.png" class="mb-5" style="width: 100px;height:auto;">
+                    <h1>Atlas</h1>
                     <hr>
                     <small class="text-muted">This value comes from session: {{message}}</small>
                 </div>

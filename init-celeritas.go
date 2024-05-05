@@ -6,7 +6,7 @@ import (
 	"myapp/handlers"
 	"os"
 
-	"github.com/younesi/celeritas"
+	"github.com/younesi/atlas"
 )
 
 func initApplication() *application {
@@ -15,8 +15,8 @@ func initApplication() *application {
 		log.Fatal(err)
 	}
 
-	// init celeritas
-	cel, err := celeritas.New(path)
+	// init atlas
+	cel, err := atlas.New(path)
 
 	if err != nil {
 		log.Fatal(err)

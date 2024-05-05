@@ -2,13 +2,13 @@ package handlers
 
 import (
 	"github.com/CloudyKit/jet/v6"
-	"github.com/younesi/celeritas"
+	"github.com/younesi/atlas"
 	"myapp/data"
 	"net/http"
 )
 
 type Handlers struct {
-	App    *celeritas.Celeritas
+	App    *atlas.Atlas
 	Models data.Models
 }
 

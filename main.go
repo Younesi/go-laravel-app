@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/younesi/celeritas"
+	"github.com/younesi/atlas"
 	"myapp/data"
 	"myapp/handlers"
 )
 
 type application struct {
-	App      *celeritas.Celeritas
+	App      *atlas.Atlas
 	Handlers *handlers.Handlers
 	Models   data.Models
 }

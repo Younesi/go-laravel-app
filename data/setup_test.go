@@ -19,7 +19,7 @@ var (
 	host     = "localhost"
 	user     = "postgres"
 	password = "secret"
-	dbName   = "celeritas_test"
+	dbName   = "atlas_test"
 	port     = "5435"
 	dsn      = "host=%s port=%s user=%s password=%s dbname=%s sslmode=disable timezone=UTC connect_timeout=5"
 )

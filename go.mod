@@ -2,14 +2,14 @@ module myapp
 
 go 1.21.6
 
-replace github.com/younesi/celeritas => ../celeritas
+replace github.com/younesi/atlas => ../atlas
 
 require (
 	github.com/CloudyKit/jet/v6 v6.2.0
 	github.com/go-chi/chi/v5 v5.0.12
 	github.com/ory/dockertest/v3 v3.10.0
 	github.com/upper/db/v4 v4.7.0
-	github.com/younesi/celeritas v0.0.0-00010101000000-000000000000
+	github.com/younesi/atlas v0.0.0-00010101000000-000000000000
 	golang.org/x/crypto v0.21.0
 )
 
