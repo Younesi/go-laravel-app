@@ -1,18 +1,21 @@
 package main
 
 import (
-	"github.com/younesi/atlas"
 	"myapp/data"
 	"myapp/handlers"
+	"myapp/middleware"
+
+	"github.com/younesi/atlas"
 )
 
 type application struct {
-	App      *atlas.Atlas
-	Handlers *handlers.Handlers
-	Models   data.Models
+	App        *atlas.Atlas
+	Handlers   *handlers.Handlers
+	Models     data.Models
+	Middleware *middleware.Middleware
 }
 
 func main() {
-	c := initApplication()
-	c.App.ListenAndServe()
+	atlas := initApplication()
+	atlas.App.ListenAndServe()
 }

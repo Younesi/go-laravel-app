@@ -1,15 +1,18 @@
 package handlers
 
 import (
+	"myapp/data"
+	"myapp/middleware"
+	"net/http"
+
 	"github.com/CloudyKit/jet/v6"
 	"github.com/younesi/atlas"
-	"myapp/data"
-	"net/http"
 )
 
 type Handlers struct {
-	App    *atlas.Atlas
-	Models data.Models
+	App        *atlas.Atlas
+	Models     data.Models
+	Middleware *middleware.Middleware
 }
 
 func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
@@ -42,6 +45,7 @@ func (h *Handlers) SessionTest(w http.ResponseWriter, r *http.Request) {
 	vars.Set(myData, msg)
 
 	err := h.App.Render.JetPage(w, r, "sessions", vars, nil)
+
 	if err != nil {
 		h.App.ErrorLog.Println("Error rendering : ", err)
 	}

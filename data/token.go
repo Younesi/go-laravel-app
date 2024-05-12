@@ -157,7 +157,6 @@ func (t *Token) GenerateToken(userId int, ttl time.Duration) (*Token, error) {
 }
 
 func (t *Token) Authenticate(authorizationHeader string) (*User, error) {
-	//	authorizationHeader := r.Header.Get("Authorization")
 	if authorizationHeader == "" {
 		return nil, errors.New("no authorization header received")
 	}

@@ -4,6 +4,7 @@ import (
 	"log"
 	"myapp/data"
 	"myapp/handlers"
+	"myapp/middleware"
 	"os"
 
 	"github.com/younesi/atlas"
@@ -16,26 +17,34 @@ func initApplication() *application {
 	}
 
 	// init atlas
-	cel, err := atlas.New(path)
+	at, err := atlas.New(path)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	cel.AppName = "MyApp"
-	cel.InfoLog.Println("Debug: ", cel.Debug)
+	at.AppName = "MyApp"
+	at.InfoLog.Println("Debug: ", at.Debug)
 
-	myHandlers := &handlers.Handlers{
-		App: cel,
+	myMiddleware := &middleware.Middleware{
+		App: at,
 	}
+	myHandlers := &handlers.Handlers{
+		App:        at,
+		Middleware: myMiddleware,
+	}
+	myModels := data.New(at.DB.Pool)
+
+	myHandlers.Models = myModels
+	myMiddleware.Models = myModels
 
 	app := &application{
-		App:      cel,
-		Handlers: myHandlers,
+		App:        at,
+		Handlers:   myHandlers,
+		Models:     myModels,
+		Middleware: myMiddleware,
 	}
 	app.App.Routes = app.routes()
-	app.Models = data.New(app.App.DB.Pool) // sql db
-	myHandlers.Models = app.Models
 
 	return app
 }

@@ -23,3 +23,5 @@ helm/platform-component/values.yaml
 /coverage.out
 tmp/atlasApp
 data/coverage.out
+./atlas
+atlas
