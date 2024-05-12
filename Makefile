@@ -1,6 +1,7 @@
 BINARY_NAME=atlasApp
 
 build:
+	@go mod tidy
 	@go mod vendor
 	@echo "Building Atlas..."
 	@go build -o tmp/${BINARY_NAME} .
