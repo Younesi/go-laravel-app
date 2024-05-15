@@ -50,3 +50,24 @@ func (h *Handlers) SessionTest(w http.ResponseWriter, r *http.Request) {
 		h.App.ErrorLog.Println("Error rendering : ", err)
 	}
 }
+
+func (h *Handlers) JsonTest(w http.ResponseWriter, r *http.Request) {
+	var payload struct {
+		Id      int64    `json:id`
+		Name    string   `json:name`
+		Hobbies []string `json:hobbies`
+	}
+
+	payload.Id = 7
+	payload.Name = "Mahdi"
+	payload.Hobbies = []string{"Games", "Hokey", "Sweaming", "Hanging out with friends"}
+
+	err := h.App.WriteJson(w, http.StatusOK, payload)
+	if err != nil {
+		h.App.ErrorLog.Println(err)
+	}
+}
+
+func (h *Handlers) DownloadFileTest(w http.ResponseWriter, r *http.Request) {
+	h.App.DownloadFile(w, r, "./public/images", "atlas.png")
+}

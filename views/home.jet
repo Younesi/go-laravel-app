@@ -30,6 +30,8 @@
                 <a href="/jet-page" class="list-group-item list-group-item-action">Render a Jet template</a>
                 <a href="/sessions" class="list-group-item list-group-item-action">Try sessions</a>
                 <a href="/form" class="list-group-item list-group-item-action">Form validation</a>
+                <a href="/json-test" class="list-group-item list-group-item-action">Json Test</a>
+                <a href="/download-test" class="list-group-item list-group-item-action">Download Test</a>
                 <a href="/auth/login" class="list-group-item list-group-item-action">Login</a>
             </div>
       </div>

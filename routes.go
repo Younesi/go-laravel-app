@@ -25,6 +25,9 @@ func (a *application) routes() *chi.Mux {
 	a.App.Routes.Get("/form", a.Handlers.Form)
 	a.App.Routes.Post("/form", a.Handlers.SubmitForm)
 
+	a.App.Routes.Get("/json-test", a.Handlers.JsonTest)
+	a.App.Routes.Get("/download-test", a.Handlers.DownloadFileTest)
+
 	// Users
 	a.App.Routes.Get("/users", func(w http.ResponseWriter, r *http.Request) {
 		users, err := a.Models.Users.GetAll()

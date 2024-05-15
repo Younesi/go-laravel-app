@@ -17,6 +17,7 @@ require (
 
 require (
 	dario.cat/mergo v1.0.0 // indirect
+	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/CloudyKit/fastprinter v0.0.0-20200109182630-33d98a066a53 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
@@ -32,7 +33,7 @@ require (
 	github.com/docker/docker v26.1.0+incompatible // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
-	github.com/go-sql-driver/mysql v1.7.1 // indirect
+	github.com/go-sql-driver/mysql v1.8.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-migrate/migrate/v4 v4.17.1 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
