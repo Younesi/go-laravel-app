@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"myapp/data"
 	"myapp/middleware"
 	"net/http"
@@ -70,4 +71,27 @@ func (h *Handlers) JsonTest(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handlers) DownloadFileTest(w http.ResponseWriter, r *http.Request) {
 	h.App.DownloadFile(w, r, "./public/images", "atlas.png")
+}
+
+func (h *Handlers) CryptoTest(w http.ResponseWriter, r *http.Request) {
+	plainText := "Hello, world"
+	fmt.Fprint(w, "Unencrypted: "+plainText+"\n")
+
+	encrypted, err := h.encrypt(plainText)
+	if err != nil {
+		h.App.ErrorLog.Println(err)
+		h.App.ErrInternalServer(w, r)
+		return
+	}
+
+	fmt.Fprint(w, "encrypted: "+encrypted+"\n")
+
+	decrypted, err := h.decrypt(encrypted)
+	if err != nil {
+		h.App.ErrorLog.Println(err)
+		h.App.ErrInternalServer(w, r)
+		return
+	}
+
+	fmt.Fprint(w, "decrypted: "+decrypted+"\n")
 }

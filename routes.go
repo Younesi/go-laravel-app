@@ -27,6 +27,7 @@ func (a *application) routes() *chi.Mux {
 
 	a.App.Routes.Get("/json-test", a.Handlers.JsonTest)
 	a.App.Routes.Get("/download-test", a.Handlers.DownloadFileTest)
+	a.App.Routes.Get("/crypto-test", a.Handlers.CryptoTest)
 
 	// Users
 	a.App.Routes.Get("/users", func(w http.ResponseWriter, r *http.Request) {
