@@ -95,3 +95,31 @@ func (h *Handlers) CryptoTest(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprint(w, "decrypted: "+decrypted+"\n")
 }
+
+func (h *Handlers) CacheTest(w http.ResponseWriter, r *http.Request) {
+	cacheKey := "passion"
+	err := h.App.Cache.Set(cacheKey, "GoLang")
+	if err != nil {
+		h.App.ErrorLog.Println(err)
+	}
+
+	cacheValue, err := h.App.Cache.Get(cacheKey)
+	if err != nil {
+		h.App.ErrorLog.Println(err)
+	}
+
+	var payload struct {
+		Key     string `json:"key"`
+		Value   string `json:"value"`
+		Message string `json:"message"`
+	}
+
+	payload.Key = cacheKey
+	payload.Value = cacheValue.(string)
+	payload.Message = "Fetched key from cache"
+
+	err = h.App.WriteJson(w, http.StatusOK, payload)
+	if err != nil {
+		h.App.ErrorLog.Println(err)
+	}
+}
