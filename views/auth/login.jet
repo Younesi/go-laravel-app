@@ -30,6 +30,9 @@ Login
         <input type="password" class="form-control" id="password" name="password"
             required="" autocomplete="password-new" value="simple">
     </div>
+    <div class="form-check form-switch">
+        <input type="checkbox" class="form-check-input" name="remember" value="remember" id="remember">
+    </div>
 
     <hr>
 

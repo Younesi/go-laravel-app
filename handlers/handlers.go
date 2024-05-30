@@ -54,9 +54,9 @@ func (h *Handlers) SessionTest(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handlers) JsonTest(w http.ResponseWriter, r *http.Request) {
 	var payload struct {
-		Id      int64    `json:id`
-		Name    string   `json:name`
-		Hobbies []string `json:hobbies`
+		Id      int64    `json:"id"`
+		Name    string   `json:"name"`
+		Hobbies []string `json:"hobbies"`
 	}
 
 	payload.Id = 7

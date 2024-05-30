@@ -10,6 +10,10 @@ import (
 )
 
 func (a *application) routes() *chi.Mux {
+	// Middleware
+
+	a.App.Routes.Use(a.Middleware.CheckRemember)
+
 	// Auth
 	a.App.Routes.Get("/auth/login", a.Handlers.Login)
 	a.App.Routes.Post("/auth/login", a.Handlers.PostLogin)

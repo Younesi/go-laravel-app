@@ -2,9 +2,10 @@ package data
 
 import (
 	"errors"
+	"time"
+
 	up "github.com/upper/db/v4"
 	"golang.org/x/crypto/bcrypt"
-	"time"
 )
 
 type User struct {
@@ -155,4 +156,13 @@ func (u *User) PasswordMatches(pass string) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func (u *User) CheckForRememberToken(id int, token string) bool {
+	var rememberToken RememberToken
+	rt := RememberToken{}
+	collection := upper.Collection(rt.Table())
+	res := collection.Find(up.Cond{"user_id": id, "remember_token": token})
+	err := res.One(&rememberToken)
+	return err == nil
 }

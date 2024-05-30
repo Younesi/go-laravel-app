@@ -1,6 +1,13 @@
 package handlers
 
-import "net/http"
+import (
+	"crypto/sha256"
+	"encoding/base64"
+	"fmt"
+	"myapp/data"
+	"net/http"
+	"time"
+)
 
 func (h *Handlers) Login(w http.ResponseWriter, r *http.Request) {
 	err := h.App.Render.Page(w, r, "auth/login", nil, nil)
@@ -33,14 +40,68 @@ func (h *Handlers) PostLogin(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Invalid password"))
 	}
 
+	if r.Form.Get("remember") == "remember" {
+		randomString := h.App.RandomString(12)
+		hasher := sha256.New()
+		_, err := hasher.Write([]byte(randomString))
+		if err != nil {
+			h.App.ErrStatus(w, http.StatusBadRequest)
+		}
+
+		sha := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
+		rm := data.RememberToken{}
+		err = rm.InsertToken(user.ID, sha)
+		if err != nil {
+			return
+		}
+
+		expiresAt := time.Now().Add(2 * 24 * 60 * 60 * time.Second)
+		cookie := http.Cookie{
+			Name:     fmt.Sprintf("_%s_remember", h.App.AppName),
+			Value:    fmt.Sprintf("%d|%s", user.ID, sha),
+			Path:     "/",
+			Expires:  expiresAt,
+			HttpOnly: true,
+			Domain:   h.App.Session.Cookie.Domain,
+			MaxAge:   1000,
+			Secure:   h.App.Session.Cookie.Secure,
+			SameSite: http.SameSiteDefaultMode,
+		}
+
+		http.SetCookie(w, &cookie)
+		h.App.Session.Put(r.Context(), "remember_token", sha)
+	}
+
 	h.App.Session.Put(r.Context(), "UserId", user.ID)
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (h *Handlers) Logout(w http.ResponseWriter, r *http.Request) {
+	if h.App.Session.Exists(r.Context(), "remember_token") {
+		rt := data.RememberToken{}
+		_ = rt.Delete(h.App.Session.GetString(r.Context(), "remember_token"))
+	}
+
+	// delete cookie
+	cookie := http.Cookie{
+		Name:     fmt.Sprintf("_%s_remember", h.App.AppName),
+		Value:    "",
+		Path:     "/",
+		Expires:  time.Now().Add(-100 * time.Hour),
+		HttpOnly: true,
+		MaxAge:   -1,
+		Domain:   h.App.Session.Cookie.Domain,
+		Secure:   h.App.Session.Cookie.Secure,
+		SameSite: http.SameSiteDefaultMode,
+	}
+	http.SetCookie(w, &cookie)
+
 	h.App.Session.RenewToken(r.Context())
 	h.App.Session.Remove(r.Context(), "UserId")
+	h.App.Session.Remove(r.Context(), "remember_token")
+	h.App.Session.Destroy(r.Context())
+	h.App.Session.RenewToken(r.Context())
 
 	http.Redirect(w, r, "/auth/login", http.StatusSeeOther)
 }
