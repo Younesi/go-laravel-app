@@ -12,7 +12,8 @@ import (
 func (h *Handlers) Login(w http.ResponseWriter, r *http.Request) {
 	err := h.App.Render.Page(w, r, "auth/login", nil, nil)
 	if err != nil {
-		h.App.ErrorLog.Println("Error rendering : ", err)
+		h.App.ErrorLog.Println("Error rendering login page: ", err)
+		h.App.ErrInternalServer(w, r)
 	}
 }
 
@@ -104,4 +105,29 @@ func (h *Handlers) Logout(w http.ResponseWriter, r *http.Request) {
 	h.App.Session.RenewToken(r.Context())
 
 	http.Redirect(w, r, "/auth/login", http.StatusSeeOther)
+}
+
+func (h *Handlers) Forgot(w http.ResponseWriter, r *http.Request) {
+	err := h.App.Render.Page(w, r, "auth/forgot", nil, nil)
+	if err != nil {
+		h.App.ErrorLog.Println("Error rendering forget page: ", err)
+		h.App.ErrInternalServer(w, r)
+	}
+}
+
+func (h *Handlers) PostForgot(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		h.App.ErrStatus(w, http.StatusBadRequest)
+		return
+	}
+	var u *data.User
+	email := r.Form.Get("email")
+	u, err = u.GetByEmail(email)
+	if err != nil {
+		h.App.ErrStatus(w, http.StatusBadRequest)
+		return
+	}
+
+	w.Write([]byte("Email functinality is not provided yet by the framework"))
 }
