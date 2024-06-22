@@ -19,21 +19,21 @@ type Handlers struct {
 func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
 	err := h.App.Render.Page(w, r, "home", nil, nil)
 	if err != nil {
-		h.App.ErrorLog.Println("Error rendering : ", err)
+		h.App.ErrorLog.Error("Error rendering : ", err)
 	}
 }
 
 func (h *Handlers) GoPage(w http.ResponseWriter, r *http.Request) {
 	err := h.App.Render.GoPage(w, r, "home", nil)
 	if err != nil {
-		h.App.ErrorLog.Println("Error rendering : ", err)
+		h.App.ErrorLog.Error("Error rendering : ", err)
 	}
 }
 
 func (h *Handlers) JetPage(w http.ResponseWriter, r *http.Request) {
 	err := h.App.Render.JetPage(w, r, "jet-template", nil, nil)
 	if err != nil {
-		h.App.ErrorLog.Println("Error rendering : ", err)
+		h.App.ErrorLog.Error("Error rendering jet page: ", err)
 	}
 }
 
@@ -48,7 +48,7 @@ func (h *Handlers) SessionTest(w http.ResponseWriter, r *http.Request) {
 	err := h.App.Render.JetPage(w, r, "sessions", vars, nil)
 
 	if err != nil {
-		h.App.ErrorLog.Println("Error rendering : ", err)
+		h.App.ErrorLog.Error("Error rendering : ", err)
 	}
 }
 
@@ -65,7 +65,7 @@ func (h *Handlers) JsonTest(w http.ResponseWriter, r *http.Request) {
 
 	err := h.App.WriteJson(w, http.StatusOK, payload)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
+		h.App.ErrorLog.Error("Error rendering : ", err)
 	}
 }
 
@@ -79,7 +79,7 @@ func (h *Handlers) CryptoTest(w http.ResponseWriter, r *http.Request) {
 
 	encrypted, err := h.encrypt(plainText)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
+		h.App.ErrorLog.Error("Error encrypting: ", err)
 		h.App.ErrInternalServer(w, r)
 		return
 	}
@@ -88,7 +88,7 @@ func (h *Handlers) CryptoTest(w http.ResponseWriter, r *http.Request) {
 
 	decrypted, err := h.decrypt(encrypted)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
+		h.App.ErrorLog.Error("Error decrypting: ", err)
 		h.App.ErrInternalServer(w, r)
 		return
 	}
@@ -100,12 +100,12 @@ func (h *Handlers) CacheTest(w http.ResponseWriter, r *http.Request) {
 	cacheKey := "passion"
 	err := h.App.Cache.Set(cacheKey, "GoLang")
 	if err != nil {
-		h.App.ErrorLog.Println(err)
+		h.App.ErrorLog.Error("Error setting cache: ", err)
 	}
 
 	cacheValue, err := h.App.Cache.Get(cacheKey)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
+		h.App.ErrorLog.Error("Error getting cache: ", err)
 	}
 
 	var payload struct {
@@ -120,6 +120,6 @@ func (h *Handlers) CacheTest(w http.ResponseWriter, r *http.Request) {
 
 	err = h.App.WriteJson(w, http.StatusOK, payload)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
+		h.App.ErrorLog.Error("Error rendering : ", err)
 	}
 }

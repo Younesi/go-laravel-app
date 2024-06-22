@@ -40,12 +40,11 @@ func (a *application) routes() *chi.Mux {
 	a.App.Routes.Get("/users", func(w http.ResponseWriter, r *http.Request) {
 		users, err := a.Models.Users.GetAll()
 		if err != nil {
-			a.App.ErrorLog.Println("Error in fetching users")
+			a.App.ErrorLog.Error("error fetching users")
 			return
 		}
 
 		for _, user := range users {
-			a.App.InfoLog.Println(user)
 			fmt.Fprintf(w, "%s : %d", user.FirstName, user.ID)
 		}
 	})
@@ -61,7 +60,7 @@ func (a *application) routes() *chi.Mux {
 
 		id, err := a.Models.Users.Insert(u)
 		if err != nil {
-			a.App.ErrorLog.Println(err)
+			a.App.ErrorLog.Error("error inserting user", err)
 			return
 		}
 
@@ -71,7 +70,7 @@ func (a *application) routes() *chi.Mux {
 	a.App.Routes.Get("/get-all-users", func(w http.ResponseWriter, r *http.Request) {
 		users, err := a.Models.Users.GetAll()
 		if err != nil {
-			a.App.ErrorLog.Println(err)
+			a.App.ErrorLog.Error("error fetching users", err)
 			return
 		}
 		for _, x := range users {
@@ -84,7 +83,7 @@ func (a *application) routes() *chi.Mux {
 
 		u, err := a.Models.Users.Get(id)
 		if err != nil {
-			a.App.ErrorLog.Println(err)
+			a.App.ErrorLog.Error("error fetching user", err)
 			return
 		}
 
@@ -95,14 +94,14 @@ func (a *application) routes() *chi.Mux {
 		id, _ := strconv.Atoi(chi.URLParam(r, "id"))
 		u, err := a.Models.Users.Get(id)
 		if err != nil {
-			a.App.ErrorLog.Println(err)
+			a.App.ErrorLog.Error("error fetching user", err)
 			return
 		}
 
 		u.LastName = a.App.RandomString(10)
 		err = u.Update(*u)
 		if err != nil {
-			a.App.ErrorLog.Println(err)
+			a.App.ErrorLog.Error("error updating user", err)
 			return
 		}
 

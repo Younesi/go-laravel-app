@@ -24,7 +24,7 @@ func initApplication() *application {
 	}
 
 	at.AppName = "MyApp"
-	at.InfoLog.Println("Debug: ", at.Debug)
+	at.InfoLog.Info("Debug mode:", "debug", at.Debug)
 
 	myMiddleware := &middleware.Middleware{
 		App: at,

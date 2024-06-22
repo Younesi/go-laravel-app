@@ -12,7 +12,7 @@ import (
 func (h *Handlers) Login(w http.ResponseWriter, r *http.Request) {
 	err := h.App.Render.Page(w, r, "auth/login", nil, nil)
 	if err != nil {
-		h.App.ErrorLog.Println("Error rendering login page: ", err)
+		h.App.ErrorLog.Info("Error rendering login page: ", err)
 		h.App.ErrInternalServer(w, r)
 	}
 }
@@ -110,7 +110,7 @@ func (h *Handlers) Logout(w http.ResponseWriter, r *http.Request) {
 func (h *Handlers) Forgot(w http.ResponseWriter, r *http.Request) {
 	err := h.App.Render.Page(w, r, "auth/forgot", nil, nil)
 	if err != nil {
-		h.App.ErrorLog.Println("Error rendering forget page: ", err)
+		h.App.ErrorLog.Error("Error rendering forget page: ", err)
 		h.App.ErrInternalServer(w, r)
 	}
 }

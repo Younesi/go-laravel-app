@@ -16,14 +16,14 @@ func (h *Handlers) Form(w http.ResponseWriter, r *http.Request) {
 
 	err := h.App.Render.Page(w, r, "form", vars, nil)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
+		h.App.ErrorLog.Error("error rendering page", err)
 	}
 }
 
 func (h *Handlers) SubmitForm(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		h.App.ErrorLog.Println(err)
+		h.App.ErrorLog.Error("error parsing form", err)
 		return
 	}
 
@@ -44,7 +44,7 @@ func (h *Handlers) SubmitForm(w http.ResponseWriter, r *http.Request) {
 
 		err := h.App.Render.Page(w, r, "form", vars, nil)
 		if err != nil {
-			h.App.ErrorLog.Println(err)
+			h.App.ErrorLog.Error("error rendering page", err)
 		}
 
 		return
