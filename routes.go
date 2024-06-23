@@ -37,7 +37,7 @@ func (a *application) routes() *chi.Mux {
 	a.App.Routes.Get("/cache-test", a.Handlers.CacheTest)
 
 	// Users
-	a.App.Routes.Get("/users", func(w http.ResponseWriter, r *http.Request) {
+	a.App.Routes.With(a.Middleware.Auth).Get("/users", func(w http.ResponseWriter, r *http.Request) {
 		users, err := a.Models.Users.GetAll()
 		if err != nil {
 			a.App.ErrorLog.Error("error fetching users")
@@ -49,7 +49,7 @@ func (a *application) routes() *chi.Mux {
 		}
 	})
 
-	a.App.Routes.Get("/create-user", func(w http.ResponseWriter, r *http.Request) {
+	a.App.Routes.With(a.Middleware.Auth).Get("/create-user", func(w http.ResponseWriter, r *http.Request) {
 		u := data.User{
 			FirstName: "Mahdi",
 			LastName:  "Younesi",
@@ -67,7 +67,7 @@ func (a *application) routes() *chi.Mux {
 		fmt.Fprintf(w, "%s : %d", u.FirstName, id)
 	})
 
-	a.App.Routes.Get("/get-all-users", func(w http.ResponseWriter, r *http.Request) {
+	a.App.Routes.With(a.Middleware.Auth).Get("/get-all-users", func(w http.ResponseWriter, r *http.Request) {
 		users, err := a.Models.Users.GetAll()
 		if err != nil {
 			a.App.ErrorLog.Error("error fetching users", err)
@@ -78,7 +78,7 @@ func (a *application) routes() *chi.Mux {
 		}
 	})
 
-	a.App.Routes.Get("/get-user/{id}", func(w http.ResponseWriter, r *http.Request) {
+	a.App.Routes.With(a.Middleware.Auth).Get("/get-user/{id}", func(w http.ResponseWriter, r *http.Request) {
 		id, _ := strconv.Atoi(chi.URLParam(r, "id"))
 
 		u, err := a.Models.Users.Get(id)
@@ -90,7 +90,7 @@ func (a *application) routes() *chi.Mux {
 		fmt.Fprintf(w, "%s %s %s", u.FirstName, u.LastName, u.Email)
 	})
 
-	a.App.Routes.Get("/update-user/{id}", func(w http.ResponseWriter, r *http.Request) {
+	a.App.Routes.With(a.Middleware.Auth).Get("/update-user/{id}", func(w http.ResponseWriter, r *http.Request) {
 		id, _ := strconv.Atoi(chi.URLParam(r, "id"))
 		u, err := a.Models.Users.Get(id)
 		if err != nil {
